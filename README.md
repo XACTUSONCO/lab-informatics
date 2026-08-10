@@ -1,61 +1,63 @@
-# Lab Informatics Repository
+# Lab Informatics
 
-## 목적
-본 Repository는 연구실 공통 데이터 관리 및 분석 환경을 표준화하기 위해 구축되었습니다.
-연구원 개인별로 다르게 관리되던 데이터 전처리, 분석 코드, 문서를 하나의 체계로 통합하여
-- 재현 가능한 분석 (Reproducibility)
-- 데이터 이력 추적 (Traceability)
-- 신규 연구원 Onboarding 용이성
+## Purpose
 
-을 확보하는 것을 목표로 합니다.
+이 저장소는 연구실의 데이터 분석 워크플로우를 표준화하고 재현 가능하게 관리하기 위한 공간입니다.
 
-## Repository 구조
+1. 자주 쓰는 연구 데이터를 표준화된 형식으로 관리
+2. 재사용 가능한 전처리·QC 코드를 공유
+3. 변경 이력을 GitHub로 관리
+4. Claude Code를 활용해 코드 리뷰와 문서화를 보조
+
+## Workflow
+
+```
+Research Data
+      ↓
+Standardization Rules   (STANDARDIZATION_RULE.md)
+      ↓
+Shared R Functions       (R/)
+      ↓
+Researcher Analysis      (analyses/)
+      ↓
+Pull Request
+      ↓
+Automated Review (Claude, GitHub Actions)
+      ↓
+Human Review
+      ↓
+Merge
+```
+
+## Repository Structure
+
 ```
 lab-informatics/
-├── README.md                  ← 본 문서
-├── CONTRIBUTING.md            ← 협업 규칙 (Branch, PR, Code Review)
-├── DATA_DICTIONARY.md         ← 데이터 컬럼/변수 정의
-├── STANDARDIZATION_RULE.md    ← Disease 명칭, Gene ID 등 표준화 규칙
-├── CLAUDE.md                  ← Claude Enterprise 운영 가이드
-├── CHANGELOG.md               ← 월간 변경 이력 기록
-├── data_manifest/             ← 데이터 출처/버전/샘플 정보
+├── STANDARDIZATION_RULE.md   # 연구실 데이터 표준 규칙
+├── CLAUDE.md                 # Claude Code 리뷰 규칙
+├── PROJECT_STATUS.md         # 프로젝트 진행 현황
+├── R/                        # 공용 전처리·QC 함수
 ├── data/
-│   ├── raw/                   ← 원본 데이터 (수정 금지)
-│   ├── processed/             ← 표준화 규칙 적용된 공용 데이터
-│   └── curated/                ← 목적별 통합 분석용 데이터
-├── R/                          ← 공통 함수
-├── analyses/                   ← 연구원별 분석 프로젝트
-│   ├── template/
-│   └── project_A/
-├── tests/                      ← 공통 함수 테스트 (testthat)
-└── .github/                    ← GitHub 협업/자동화 설정
-    ├── pull_request_template.md
-    └── workflows/
+│   ├── raw/                  # 원본 데이터 (수정하지 않음)
+│   ├── processed/            # 표준화 적용된 공용 데이터
+│   └── metadata/             # metadata.csv, annotation.csv
+├── analyses/
+│   └── template/             # 새 분석 시작용 템플릿 → 사용법: template/README.md 참고
+└── .github/workflows/        # 자동화 (PR 시 Claude 리뷰 실행)
 ```
 
-## 데이터 관리 원칙 (3단계)
-| 단계 | 설명 | 수정 가능 여부 |
-|---|---|---|
-| Raw | 외부에서 받은 원본 데이터 | 절대 수정 금지 |
-| Processed | Raw를 연구실 표준으로 정제한 공용 데이터 | 표준화 규칙 변경 시에만 재생성 |
-| Curated | 여러 Processed를 목적에 맞게 통합한 분석용 데이터 | 분석 목적에 따라 갱신 |
+## Getting Started
 
-모든 연구원은 반드시 **Processed 또는 Curated 단계**에서 분석을 시작합니다.
+1. GitHub 계정 생성 후 관리자에게 초대 요청 → Organization 참여
+2. [GitHub Desktop](https://desktop.github.com) 설치 후 이 저장소를 Clone
+3. 작업 전 항상 Pull, 작업 후 Commit + Push
+4. 개인 분석을 시작할 때는 `analyses/template/`을 참고 (자세한 방법은 `analyses/template/README.md`)
+5. 공용 파일(`R/`, `data/processed/`, `STANDARDIZATION_RULE.md` 등)을 수정할 때는 Branch를 만들고 Pull Request를 통해 반영 — PR을 열면 Claude가 자동으로 리뷰합니다
 
-## 시작하기 (신규 연구원)
-1. 본 Repository를 clone (GitHub의 코드를 내 컴퓨터로 복사)
-2. `renv::restore()` 로 분석 환경 복원 (연구실 표준 R 패키지 버전 자동 설치)
-3. `analyses/template/` 을 복사하여 본인 프로젝트 시작 
-4. `DATA_DICTIONARY.md`, `STANDARDIZATION_RULE.md` 필독 (컬럼 의미·규칙 확인 후 작업 시작)
+전체 GitHub 사용법은 `[GitHub 시작하기]` 교육자료를 참고하세요.
 
-## 문서 갱신 주기
-본 Repository의 모든 표준 문서는 **매월 1회** 갱신됩니다. 
-자세한 절차는 `CONTRIBUTING.md`의 "월간 유지보수 절차" 항목을 참고하세요.
+## Rules of Thumb
 
-
-
-
-
-
-
-
+- **Raw 데이터는 수정하지 않습니다.** `data/raw/`는 원본 보존 전용입니다.
+- **공용 파일 수정은 Branch + PR을 통해서만** 진행합니다.
+- **데이터 표준은 `STANDARDIZATION_RULE.md`를 따릅니다.** 새로운 표준이 필요하면 PR로 제안하세요.
