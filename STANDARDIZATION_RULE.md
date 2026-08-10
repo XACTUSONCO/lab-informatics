@@ -46,7 +46,7 @@
 | 항목 | 표준 | 비고 |
 |---|---|---|
 | Sample 표기 | **원본 Sample ID 유지** (예: `GSM2420259`, `TCGA-2F-A9KO-01`) | GEO/TCGA에서 이미 고유하게 관리되므로 변형하지 않음. Source 정보는 Metadata에서 별도 관리 |
-| Expression 값 | **TPM (Processed 단계 기준)** | Processed 단계에서는 동일 단위 유지. log transformation·batch correction은 Curated 단계에서 수행 |
+| Expression 값 | **TPM (Processed 단계 기준)** | Processed 단계에서는 TPM 스케일을 유지. log2 변환·batch correction은 Curated 단계에서 수행. |
 | Gene 표기 | `[Gene Symbol]_[Entrez ID]` | 세포주 패널과 동일 규칙 |
 
 ## 4. RNA (Private 데이터)
@@ -63,9 +63,9 @@
 
 | 항목 | 표준 |
 |---|---|
-| Matrix 방향 | Protein Target × Sample (Cell Line) — RNA 표준과 방향 일관성 확보 |
+| Matrix 방향 | Protein Target × Sample (Cell Line)  |
 | Cell Line ID | **Cell Line Name** (RNA 규칙과 동일) |
-| Protein ID | X 제거 (표준 Protein Target 명명 규칙과 정합성 확보) |
+| Protein ID | X 제거  |
 
 ## 6. Protein (Private 데이터)
 
