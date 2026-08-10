@@ -39,8 +39,8 @@ lab-informatics/
 ├── R/                        # 공용 전처리·QC 함수
 ├── data/
 │   ├── raw/                  # 원본 데이터 (수정하지 않음)
-│   ├── processed/            # 표준화 적용된 공용 데이터
-│   └── metadata/             # metadata.csv, annotation.csv
+│   ├── processed/            # 표준화 규칙이 적용된 공용 데이터
+│   └── curated/              # 분석 목적에 맞게 processed 데이터를 통합한 분석용 데이터
 ├── analyses/
 │   └── template/             # 새 분석 시작용 템플릿 → 사용법: template/README.md 참고
 └── .github/workflows/        # 자동화 (PR 시 Claude 리뷰 실행)
@@ -59,5 +59,6 @@ lab-informatics/
 ## Rules of Thumb
 
 - **Raw 데이터는 수정하지 않습니다.** `data/raw/`는 원본 보존 전용입니다.
+- **`data/processed/` → `data/curated/`는 목적별로 통합된 결과입니다.** curated 데이터를 만들 때도 원본(raw)과 processed는 그대로 유지하세요.
 - **공용 파일 수정은 Branch + PR을 통해서만** 진행합니다.
 - **데이터 표준은 `STANDARDIZATION_RULE.md`를 따릅니다.** 새로운 표준이 필요하면 PR로 제안하세요.
