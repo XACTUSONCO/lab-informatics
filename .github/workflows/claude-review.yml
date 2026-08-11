@@ -1,0 +1,52 @@
+name: Claude PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  claude-review:
+    # PR 생성/업데이트 시 자동 실행, 또는 PR/이슈 댓글에 @claude가 멘션될 때 실행
+    if: |
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Claude Code Review
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Review the changes in this pull request.
+            This repository is used for research data standardization.
+
+            Before reviewing:
+            1. Read CLAUDE.md for repository-specific instructions.
+            2. Read STANDARDIZATION_RULE.md for detailed data standardization rules.
+
+            Review the pull request for:
+            - violations of the repository's standardization rules
+            - file and folder structure issues
+            - naming convention inconsistencies
+            - inappropriate modification of raw data
+            - reproducibility issues
+            - potential problems in R scripts
+            - missing or unclear documentation
+
+            Focus only on issues relevant to this repository.
+            Clearly explain which rule is violated and how it should be corrected.
+
+            If this workflow was triggered by an @claude mention in a comment,
+            focus your review on what was specifically asked in that comment.
