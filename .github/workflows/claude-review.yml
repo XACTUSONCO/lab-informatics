@@ -3,6 +3,7 @@ name: Claude PR Review
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+
   issue_comment:
     types: [created]
 
@@ -11,25 +12,39 @@ permissions:
   pull-requests: write
   issues: write
   id-token: write
+  actions: read
 
 jobs:
   claude-review:
-    # PR 생성/업데이트 시 자동 실행, 또는 PR/이슈 댓글에 @claude가 멘션될 때 실행
+    # 자동 PR 리뷰 또는 @claude 수동 호출 시 실행
     if: |
       github.event_name == 'pull_request' ||
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude'))
+      (
+        github.event_name == 'issue_comment' &&
+        contains(github.event.comment.body, '@claude')
+      )
+
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Claude Code Review
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          # PR 이벤트에서 진행 상황 및 리뷰 코멘트 추적
+          track_progress: true
+
           prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
             Review the changes in this pull request.
             This repository is used for research data standardization.
 
@@ -46,8 +61,29 @@ jobs:
             - potential problems in R scripts
             - missing or unclear documentation
 
-            Focus only on issues relevant to this repository.
-            Clearly explain which rule is violated and how it should be corrected.
+            For data standardization, pay particular attention to:
+            - whether the correct standard is applied for the data type
+            - matrix orientation
+            - expression value scale
+            - cell line and sample naming
+            - gene/protein identifier format
+            - separation of metadata and annotation
+            - processed/curated file naming rules
 
-            If this workflow was triggered by an @claude mention in a comment,
-            focus your review on what was specifically asked in that comment.
+            Focus only on issues relevant to this repository.
+
+            For every issue:
+            - explain what is wrong
+            - cite the relevant section of STANDARDIZATION_RULE.md or CLAUDE.md
+            - explain how it should be corrected
+
+            If you are not certain whether a change violates a rule,
+            ask a question instead of treating it as a definite violation.
+
+            Write the review in Korean.
+
+            If this workflow was triggered by an @claude mention,
+            focus primarily on what the user specifically requested.
+
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
