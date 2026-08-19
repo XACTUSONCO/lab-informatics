@@ -50,5 +50,7 @@ jobs:
             Focus only on issues relevant to this repository.
             Clearly explain which rule is violated and how it should be corrected.
 
+ 	    Post the final review as a comment on this pull request.
+
             If this workflow was triggered by an @claude mention in a comment,
             focus your review on what was specifically asked in that comment.
