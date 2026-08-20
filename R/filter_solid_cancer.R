@@ -14,12 +14,13 @@ model_solid <- model[
 
 solid_ids <- model_solid$ModelID
 
-# Annotation
-annot <- model_solid[, .(
+# Metadata source
+meta <- model_solid[, .(
   ModelID,
   StrippedCellLineName,
   OncotreeCode,
-  OncotreeLineage
+  OncotreeLineage,
+  OncotreePrimaryDisease
 )]
 
 # Default entry
@@ -28,23 +29,43 @@ expr_default <- expr[IsDefaultEntryForModel == "Yes"]
 # Solid cancer
 expr_solid <- expr_default[ModelID %in% solid_ids]
 
-# Annotation merge
+# Metadata merge
 expr_solid <- merge(
-  annot,
+  meta,
   expr_solid,
   by = "ModelID"
 )
 
-# 기존 연구원 처리 유지 -----------------------------
+# ----------------------------------------------------
+# 1. Metadata 분리
+# ----------------------------------------------------
+
+metadata <- expr_solid[, .(
+  `Sample ID` = StrippedCellLineName,
+  `Data Type` = "RNA",
+  Source = "DepMap 26Q1",
+  `Cell Line Name` = StrippedCellLineName,
+  `Cell Line ID` = StrippedCellLineName,
+  Tissue = OncotreeLineage,
+  `Disease Type` = OncotreePrimaryDisease
+)]
+
+# ----------------------------------------------------
+# 2. Expression에 필요 없는 metadata / index 컬럼 제거
+# ----------------------------------------------------
 
 drop_expr_cols <- intersect(
   c(
+    "V1",
     "row_index",
     "ModelID",
     "SequencingID",
     "ModelConditionID",
     "IsDefaultEntryForMC",
-    "IsDefaultEntryForModel"
+    "IsDefaultEntryForModel",
+    "OncotreeCode",
+    "OncotreeLineage",
+    "OncotreePrimaryDisease"
   ),
   names(expr_solid)
 )
@@ -57,18 +78,79 @@ setnames(
   "CELL_LINE_NAME"
 )
 
-setcolorder(
+# ----------------------------------------------------
+# 3. Gene 표기: "TP53 (7157)" -> "TP53_7157"
+# ----------------------------------------------------
+
+gene_cols <- setdiff(
+  names(expr_solid),
+  "CELL_LINE_NAME"
+)
+
+setnames(
   expr_solid,
-  c(
-    "CELL_LINE_NAME",
-    "OncotreeCode",
-    "OncotreeLineage"
+  gene_cols,
+  gsub(
+    "^(.*?)\\s*\\((\\d+)\\)$",
+    "\\1_\\2",
+    gene_cols
   )
 )
 
-# 기존 연구원 방식:
-# "TP53 (7157)" → "TP53"
-setnames(
+# ----------------------------------------------------
+# 4. Annotation 생성
+# ----------------------------------------------------
+
+gene_names <- setdiff(
+  names(expr_solid),
+  "CELL_LINE_NAME"
+)
+
+annotation <- data.table(
+  `Gene Symbol` = sub("_(\\d+)$", "", gene_names),
+  `Entrez ID` = sub("^.*_(\\d+)$", "\\1", gene_names),
+  `Ensembl ID` = NA_character_,
+  `Gene Type` = NA_character_
+)
+
+# ----------------------------------------------------
+# 5. Matrix 방향: Cell Line x Gene -> Gene x Sample
+# ----------------------------------------------------
+
+expr_long <- melt(
   expr_solid,
-  gsub("\\s*\\(\\d+\\)$", "", names(expr_solid))
+  id.vars = "CELL_LINE_NAME",
+  variable.name = "Gene",
+  value.name = "Expression"
+)
+
+expr_processed <- dcast(
+  expr_long,
+  Gene ~ CELL_LINE_NAME,
+  value.var = "Expression"
+)
+
+# ----------------------------------------------------
+# 6. Processed output 저장
+# ----------------------------------------------------
+
+dir.create(
+  "data/processed",
+  showWarnings = FALSE,
+  recursive = TRUE
+)
+
+fwrite(
+  expr_processed,
+  "data/processed/RNA_DepMap_CellLine_TPMLogp1_26Q1.csv"
+)
+
+fwrite(
+  metadata,
+  "data/processed/metadata.csv"
+)
+
+fwrite(
+  annotation,
+  "data/processed/annotation.csv"
 )

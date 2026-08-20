@@ -1,0 +1,41 @@
+Sample ID,Data Type,Source,Cell Line Name,Cell Line ID,Tissue,Disease Type
+A101D,RNA,DepMap 26Q1,A101D,A101D,Skin,Melanoma
+COV434,RNA,DepMap 26Q1,COV434,COV434,Ovary/Fallopian Tube,Ovarian Epithelial Tumor
+RT4,RNA,DepMap 26Q1,RT4,RT4,Bladder/Urinary Tract,Bladder Urothelial Carcinoma
+KMRC3,RNA,DepMap 26Q1,KMRC3,KMRC3,Kidney,Renal Cell Carcinoma
+TUHR14TKB,RNA,DepMap 26Q1,TUHR14TKB,TUHR14TKB,Kidney,Renal Cell Carcinoma
+NCIH1395,RNA,DepMap 26Q1,NCIH1395,NCIH1395,Lung,Non-Small Cell Lung Cancer
+MKN1,RNA,DepMap 26Q1,MKN1,MKN1,Esophagus/Stomach,Esophagogastric Adenocarcinoma
+SW837,RNA,DepMap 26Q1,SW837,SW837,Bowel,Colorectal Adenocarcinoma
+SNU1196,RNA,DepMap 26Q1,SNU1196,SNU1196,Biliary Tract,Intraductal Papillary Neoplasm of the Bile Duct
+ABC1,RNA,DepMap 26Q1,ABC1,ABC1,Lung,Non-Small Cell Lung Cancer
+YKG1,RNA,DepMap 26Q1,YKG1,YKG1,CNS/Brain,Adult-Type Diffuse Glioma
+PECAPJ34CLONEC12,RNA,DepMap 26Q1,PECAPJ34CLONEC12,PECAPJ34CLONEC12,Head and Neck,Head and Neck Squamous Cell Carcinoma
+NCIH2882,RNA,DepMap 26Q1,NCIH2882,NCIH2882,Lung,Non-Small Cell Lung Cancer
+LC1F,RNA,DepMap 26Q1,LC1F,LC1F,Lung,Non-Small Cell Lung Cancer
+SNU283,RNA,DepMap 26Q1,SNU283,SNU283,Bowel,Colorectal Adenocarcinoma
+YD10B,RNA,DepMap 26Q1,YD10B,YD10B,Head and Neck,Head and Neck Squamous Cell Carcinoma
+WM983B,RNA,DepMap 26Q1,WM983B,WM983B,Skin,Melanoma
+LK2,RNA,DepMap 26Q1,LK2,LK2,Lung,Non-Small Cell Lung Cancer
+BFTC909,RNA,DepMap 26Q1,BFTC909,BFTC909,Kidney,Renal Cell Carcinoma
+NCIH446,RNA,DepMap 26Q1,NCIH446,NCIH446,Lung,Lung Neuroendocrine Tumor
+KYSE140,RNA,DepMap 26Q1,KYSE140,KYSE140,Esophagus/Stomach,Esophageal Squamous Cell Carcinoma
+ZR7530,RNA,DepMap 26Q1,ZR7530,ZR7530,Breast,Invasive Breast Carcinoma
+KCIMOH1,RNA,DepMap 26Q1,KCIMOH1,KCIMOH1,Pancreas,Pancreatic Adenocarcinoma
+LC1SQSF,RNA,DepMap 26Q1,LC1SQSF,LC1SQSF,Lung,Non-Small Cell Lung Cancer
+COGAR359,RNA,DepMap 26Q1,COGAR359,COGAR359,CNS/Brain,Embryonal Tumor
+COLO794,RNA,DepMap 26Q1,COLO794,COLO794,Skin,Melanoma
+PACADD119,RNA,DepMap 26Q1,PACADD119,PACADD119,Pancreas,Pancreatic Adenocarcinoma
+KKU100,RNA,DepMap 26Q1,KKU100,KKU100,Biliary Tract,Intraductal Papillary Neoplasm of the Bile Duct
+KKU213,RNA,DepMap 26Q1,KKU213,KKU213,Biliary Tract,Intraductal Papillary Neoplasm of the Bile Duct
+SKN,RNA,DepMap 26Q1,SKN,SKN,Uterus,Uterine Sarcoma/Mesenchymal
+93T449,RNA,DepMap 26Q1,93T449,93T449,Soft Tissue,Liposarcoma
+OS252,RNA,DepMap 26Q1,OS252,OS252,Bone,Osteosarcoma
+NZM11,RNA,DepMap 26Q1,NZM11,NZM11,Skin,Melanoma
+HOKUG,RNA,DepMap 26Q1,HOKUG,HOKUG,Cervix,Glassy Cell Carcinoma of the Cervix
+TGBC18TKB,RNA,DepMap 26Q1,TGBC18TKB,TGBC18TKB,Ampulla of Vater,Ampullary Carcinoma
+HMVII,RNA,DepMap 26Q1,HMVII,HMVII,Vulva/Vagina,Mucosal Melanoma of the Vulva/Vagina
+HSSCH2,RNA,DepMap 26Q1,HSSCH2,HSSCH2,Peripheral Nervous System,Nerve Sheath Tumor
+LU138,RNA,DepMap 26Q1,LU138,LU138,Lung,Lung Neuroendocrine Tumor
+CCLFPEDS0026T,RNA,DepMap 26Q1,CCLFPEDS0026T,CCLFPEDS0026T,Kidney,Wilms' Tumor
+RMZ,RNA,DepMap 26Q1,RMZ,RMZ,Soft Tissue,Rhabdomyosarcoma
